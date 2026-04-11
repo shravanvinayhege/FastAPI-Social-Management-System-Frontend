@@ -123,47 +123,9 @@ export default function HomePage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleScrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   return (
     <main className="min-h-screen px-4 py-6 text-slate-100 sm:py-8 lg:py-10">
       <div className="mx-auto w-full max-w-6xl space-y-6 sm:space-y-8">
-        <nav className="vf-card vf-post-nav-sticky flex flex-col gap-2 rounded-[1.25rem] p-4 backdrop-blur-xl sm:flex-row sm:flex-wrap sm:items-center">
-          <button
-            type="button"
-            onClick={() => handleScrollToSection("overview-section")}
-            className="vf-btn-secondary w-full px-4 py-2 text-sm sm:w-auto"
-          >
-            Overview
-          </button>
-          <button
-            type="button"
-            onClick={() => handleScrollToSection("create-post-section")}
-            className="vf-btn-secondary w-full px-4 py-2 text-sm sm:w-auto"
-          >
-            Create Post
-          </button>
-          <button
-            type="button"
-            onClick={() => handleScrollToSection("my-posts-section")}
-            className="vf-btn-secondary w-full px-4 py-2 text-sm sm:w-auto"
-          >
-            My Posts
-          </button>
-          <button
-            type="button"
-            onClick={() => handleScrollToSection("all-posts-section")}
-            className="vf-btn-secondary w-full px-4 py-2 text-sm sm:w-auto"
-          >
-            All Posts
-          </button>
-        </nav>
-
         <header id="overview-section" className="vf-card rounded-[1.75rem] p-5 sm:p-6 lg:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
@@ -354,10 +316,12 @@ export default function HomePage() {
           onClick={handleScrollToTop}
           className="vf-btn-primary fixed bottom-4 right-4 z-50 px-3 py-2 text-xs shadow-xl sm:bottom-6 sm:right-6 sm:px-4 sm:py-3 sm:text-sm"
           aria-label="Scroll to top"
+          title="Scroll to top"
         >
-          Top Scroll
+          Scroll to top
         </button>
       ) : null}
+
     </main>
   );
 }
