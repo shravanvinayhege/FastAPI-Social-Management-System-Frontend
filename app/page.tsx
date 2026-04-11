@@ -133,32 +133,32 @@ export default function HomePage() {
   return (
     <main className="min-h-screen px-4 py-6 text-slate-100 sm:py-8 lg:py-10">
       <div className="mx-auto w-full max-w-6xl space-y-6 sm:space-y-8">
-        <nav className="vf-card vf-post-nav-sticky flex flex-wrap items-center gap-2 rounded-[1.25rem] p-4 backdrop-blur-xl">
+        <nav className="vf-card vf-post-nav-sticky flex flex-col gap-2 rounded-[1.25rem] p-4 backdrop-blur-xl sm:flex-row sm:flex-wrap sm:items-center">
           <button
             type="button"
             onClick={() => handleScrollToSection("overview-section")}
-            className="vf-btn-secondary px-4 py-2 text-sm"
+            className="vf-btn-secondary w-full px-4 py-2 text-sm sm:w-auto"
           >
             Overview
           </button>
           <button
             type="button"
             onClick={() => handleScrollToSection("create-post-section")}
-            className="vf-btn-secondary px-4 py-2 text-sm"
+            className="vf-btn-secondary w-full px-4 py-2 text-sm sm:w-auto"
           >
             Create Post
           </button>
           <button
             type="button"
             onClick={() => handleScrollToSection("my-posts-section")}
-            className="vf-btn-secondary px-4 py-2 text-sm"
+            className="vf-btn-secondary w-full px-4 py-2 text-sm sm:w-auto"
           >
             My Posts
           </button>
           <button
             type="button"
             onClick={() => handleScrollToSection("all-posts-section")}
-            className="vf-btn-secondary px-4 py-2 text-sm"
+            className="vf-btn-secondary w-full px-4 py-2 text-sm sm:w-auto"
           >
             All Posts
           </button>
@@ -352,7 +352,7 @@ export default function HomePage() {
         <button
           type="button"
           onClick={handleScrollToTop}
-          className="vf-btn-primary fixed bottom-6 right-6 z-50 px-4 py-3 text-sm shadow-xl"
+          className="vf-btn-primary fixed bottom-4 right-4 z-50 px-3 py-2 text-xs shadow-xl sm:bottom-6 sm:right-6 sm:px-4 sm:py-3 sm:text-sm"
           aria-label="Scroll to top"
         >
           Top Scroll

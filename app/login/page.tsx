@@ -52,7 +52,7 @@ export default function LoginPage() {
     <main className="vf-login-shell relative min-h-screen overflow-hidden px-4 py-10">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(16,185,129,0.18),transparent_40%),radial-gradient(circle_at_85%_10%,rgba(14,165,233,0.22),transparent_35%),radial-gradient(circle_at_50%_90%,rgba(59,130,246,0.2),transparent_40%)]" />
 
-      <header className="vf-login-topbar relative z-10 mx-auto mb-8 flex w-full max-w-6xl items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-xl sm:px-6">
+      <header className="vf-login-topbar relative z-10 mx-auto mb-8 flex w-full max-w-6xl flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div className="flex items-center gap-3">
           <span className="vf-login-symbol inline-flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/15 text-cyan-200">
             <svg
@@ -83,7 +83,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 sm:justify-end">
           <a href="#about" className="vf-btn-secondary px-3 py-2 text-xs sm:text-sm">
             About
           </a>
@@ -103,15 +103,15 @@ export default function LoginPage() {
       </header>
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-6 lg:grid-cols-[1fr_0.95fr]">
-        <section className="vf-card relative block h-44 overflow-hidden rounded-[2rem] p-6 sm:h-56 lg:h-[34rem] lg:p-8">
+        <section className="vf-card relative block min-h-[18rem] overflow-hidden rounded-[2rem] p-5 sm:min-h-[22rem] sm:p-6 lg:min-h-[34rem] lg:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(56,189,248,0.18),transparent_38%),radial-gradient(circle_at_82%_16%,rgba(16,185,129,0.14),transparent_34%),linear-gradient(180deg,rgba(15,23,42,0.2),transparent_50%)]" />
           <div className="relative z-10 flex h-full flex-col justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">Secure Access</p>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-cyan-300 sm:text-xs sm:tracking-[0.35em]">Secure Access</p>
               <h2 className="mt-3 font-[var(--font-space-grotesk)] text-2xl font-semibold tracking-tight text-white sm:text-3xl">
                 Welcome to VoteFlow
               </h2>
-              <p className="vf-login-left-description mt-3 max-w-md text-sm leading-6 text-slate-200">
+              <p className="vf-login-left-description mt-3 max-w-md text-sm leading-6 text-slate-200 sm:text-base">
                 Sign in to publish posts, vote on community content, and manage your personal feed.
               </p>
             </div>
@@ -133,10 +133,10 @@ export default function LoginPage() {
           </div>
         </section>
 
-        <section className="vf-card relative w-full rounded-[2rem] p-8">
-          <div className="mb-8">
+        <section className="vf-card relative w-full rounded-[2rem] p-5 sm:p-6 lg:p-8">
+          <div className="mb-6 sm:mb-8">
             <p className="text-xs uppercase tracking-[0.45em] text-emerald-300">Welcome Back</p>
-            <h1 className="mt-3 font-[var(--font-space-grotesk)] text-3xl font-semibold tracking-tight text-white">
+            <h1 className="mt-3 font-[var(--font-space-grotesk)] text-2xl font-semibold tracking-tight text-white sm:text-3xl">
               Sign in to your dashboard
             </h1>
             <p className="vf-login-description mt-2 text-sm text-slate-200/80">
@@ -144,7 +144,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <label className="block">
               <span className="mb-2 block text-sm font-medium text-slate-100">Email</span>
               <input
@@ -229,7 +229,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-4 text-sm text-slate-300">
+          <p className="mt-4 text-sm text-slate-300 sm:text-[15px]">
             New here?{" "}
             <Link href="/register" className="font-medium text-cyan-300 hover:text-cyan-200">
               Create an account
