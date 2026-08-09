@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PostCard from "./components/PostCard";
 import ThemeToggle from "./components/ThemeToggle";
-import SettingsMenu from "./components/SettingsMenu";
 import Composer from "./components/Composer";
 import FeedTabs from "./components/FeedTabs";
 import SearchBar from "./components/SearchBar";
@@ -193,9 +192,7 @@ export default function HomePage() {
                 </li>
               </ul>
 
-              <div className="mt-4">
-                <SettingsMenu />
-              </div>
+              {/* settings menu removed */}
             </nav>
           </aside>
 
