@@ -97,7 +97,7 @@ export default function PostCard({
 
   return (
     <article className="group rounded-[1.25rem] border border-white/6 bg-white/2 p-4 transition hover:shadow-lg">
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <VoteRail
           votes={currentVotes}
           onUpvote={() => void handleVote(1)}
