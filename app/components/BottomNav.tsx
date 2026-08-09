@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getCurrentUserId } from "../../lib/api";
+import { getCurrentUserId, logout } from "../../lib/api";
 
 export default function BottomNav() {
   const path = usePathname();
@@ -23,13 +23,25 @@ export default function BottomNav() {
           </svg>
           <span>Feed</span>
         </Link>
-        <Link href={myHref} className={`flex flex-col items-center text-xs text-slate-300`}>
+        {/* replaced My Posts link with Logout button */}
+        <button
+          type="button"
+          className="flex flex-col items-center text-xs text-slate-300"
+          onClick={() => {
+            logout();
+            // router is not available here; we'll compute it via window
+            if (typeof window !== "undefined") window.location.href = "/login";
+          }}
+          aria-label="Logout"
+          title="Logout"
+        >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="mb-0.5">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M16 17l5-5-5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M21 12H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 19H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span>My Posts</span>
-        </Link>
+          <span>Logout</span>
+        </button>
         <Link href="/" className={`flex flex-col items-center text-xs text-slate-300`}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="mb-0.5">
             <path d="M13 2L3 14h9l-1 8L21 10h-9l1-8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
