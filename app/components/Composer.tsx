@@ -32,7 +32,7 @@ export default function Composer({ onCreate }: ComposerProps) {
 
   return (
     <form onSubmit={submit} className="vf-card rounded-[1.25rem] p-4" aria-label="Create post">
-      <div className="flex items-start gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
         <div className="flex-1">
           <input
             value={title}
@@ -51,12 +51,11 @@ export default function Composer({ onCreate }: ComposerProps) {
             />
           ) : null}
         </div>
-
-        <div className="flex shrink-0 items-center">
+        <div className="mt-3 flex shrink-0 items-center sm:mt-0">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="vf-btn-primary px-4 py-2 text-sm disabled:opacity-60 focus-visible"
+            className="vf-btn-primary w-full px-4 py-2 text-sm disabled:opacity-60 focus-visible sm:w-auto"
           >
             {isSubmitting ? "Posting..." : "Post"}
           </button>
