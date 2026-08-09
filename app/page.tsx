@@ -204,7 +204,7 @@ export default function HomePage() {
             </nav>
           </aside>
 
-          <section className="lg:col-span-9 space-y-6">
+          <section className="lg:col-span-6 lg:col-start-4 space-y-6">
             <header id="overview-section" className="vf-card rounded-[1.5rem] p-5">
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -216,6 +216,7 @@ export default function HomePage() {
             </header>
 
         <section className="space-y-4">
+          <div className="mx-auto max-w-[700px]">
           <div className="flex items-center justify-between">
             <div className="">
               <FeedTabs mode={mode} onChange={handleModeChange} />
@@ -226,6 +227,7 @@ export default function HomePage() {
           <Composer
             onCreate={(created) => setPosts((prev) => [{ Post: created, votes: 0 }, ...prev])}
           />
+          </div>
         </section>
 
         {isLoading ? <Loading label="Loading posts..." /> : null}
@@ -237,7 +239,7 @@ export default function HomePage() {
         ) : null}
 
         {!isLoading && !error && posts.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-4 mx-auto max-w-[700px]">
             {posts.map((post) => (
               <PostCard
                 key={post.Post.id}

@@ -59,9 +59,26 @@ export default function Composer({ onCreate }: ComposerProps) {
 
           <div className="mt-3 flex items-center justify-between">
             <div className="flex items-center gap-3 text-slate-300">
-              <button type="button" className="p-2 rounded-md hover:bg-white/5 focus-visible">📎</button>
-              <button type="button" className="p-2 rounded-md hover:bg-white/5 focus-visible">🖼️</button>
-              <button type="button" className="p-2 rounded-md hover:bg-white/5 focus-visible">🔗</button>
+              <span className="decor-icon p-2 rounded-md" aria-hidden>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-90">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M17 3v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              <span className="decor-icon p-2 rounded-md" aria-hidden>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                  <circle cx="8.5" cy="9.5" r="1.5" fill="currentColor" />
+                </svg>
+              </span>
+              <span className="decor-icon p-2 rounded-md" aria-hidden>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 14l6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M14 14h6v6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M7 7H3v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+
             </div>
 
             <div className="flex-shrink-0">
