@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCurrentUserId, logout } from "../../lib/api";
+import ConfirmModal from "./ConfirmModal";
 
 export default function BottomNav() {
   const path = usePathname();
   const [myHref, setMyHref] = useState<string>("/login");
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     const id = getCurrentUserId();
@@ -23,15 +25,11 @@ export default function BottomNav() {
           </svg>
           <span>Feed</span>
         </Link>
-        {/* replaced My Posts link with Logout button */}
+        {/* replaced My Posts link with Logout button (opens confirmation) */}
         <button
           type="button"
           className="flex flex-col items-center text-xs text-slate-300"
-          onClick={() => {
-            logout();
-            // router is not available here; we'll compute it via window
-            if (typeof window !== "undefined") window.location.href = "/login";
-          }}
+          onClick={() => setConfirmOpen(true)}
           aria-label="Logout"
           title="Logout"
         >
@@ -42,6 +40,19 @@ export default function BottomNav() {
           </svg>
           <span>Logout</span>
         </button>
+
+        <ConfirmModal
+          open={confirmOpen}
+          title="Log out"
+          description="Are you sure you want to log out?"
+          confirmLabel="Log out"
+          cancelLabel="Cancel"
+          onCancel={() => setConfirmOpen(false)}
+          onConfirm={() => {
+            logout();
+            if (typeof window !== "undefined") window.location.href = "/login";
+          }}
+        />
         <Link href="/" className={`flex flex-col items-center text-xs text-slate-300`}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="mb-0.5">
             <path d="M13 2L3 14h9l-1 8L21 10h-9l1-8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
