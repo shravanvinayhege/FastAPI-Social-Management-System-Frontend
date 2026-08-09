@@ -10,6 +10,7 @@ export default function Header() {
   const [isAuthed, setIsAuthed] = useState(false);
   const [user, setUser] = useState<{ id: number; email: string } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -43,9 +44,23 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <Link href="/login" className="hidden md:inline-block">
+
+          {/* mobile menu toggle */}
+          <button
+            type="button"
+            className="md:hidden vf-btn-secondary px-2 py-1"
+            onClick={() => setMobileOpen((s) => !s)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+            title="Menu"
+          >
+            {mobileOpen ? "✕" : "☰"}
+          </button>
+
+          <Link href="/login" className="md:hidden">
             <button className="vf-btn-secondary px-3 py-1 text-sm">Sign in</button>
           </Link>
+
           <div className="hidden md:block">
             {isAuthed && user ? (
               <Link href={`/u/${user.id}`} className="flex items-center gap-2">
@@ -58,6 +73,27 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* Mobile menu panel */}
+      {mobileOpen ? (
+        <div id="mobile-menu" className="md:hidden border-t border-white/6 bg-transparent backdrop-blur-sm">
+          <div className="vf-container flex flex-col gap-2 px-4 py-3">
+            <Link href="/" onClick={() => setMobileOpen(false)} className="text-sm text-slate-200">
+              Feed
+            </Link>
+            {!isAuthed ? (
+              <Link href="/login" onClick={() => setMobileOpen(false)} className="text-sm text-slate-200">
+                Sign in
+              </Link>
+            ) : user ? (
+              <Link href={`/u/${user.id}`} onClick={() => setMobileOpen(false)} className="flex items-center gap-2">
+                <Avatar size={32} email={user.email} id={user.id} />
+                <span className="text-sm text-slate-200">{user.email}</span>
+              </Link>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }
