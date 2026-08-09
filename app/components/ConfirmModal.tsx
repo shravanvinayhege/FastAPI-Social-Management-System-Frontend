@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   open: boolean;
@@ -22,9 +23,10 @@ export default function ConfirmModal({
   onCancel,
 }: Props) {
   if (!open) return null;
+  if (typeof document === "undefined") return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+  const modal = (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
       <div className="absolute inset-0 bg-black/50" onClick={onCancel} />
       <div className="relative z-10 w-full max-w-sm rounded-xl bg-slate-900 p-4">
         <h3 className="text-lg font-semibold text-white">{title}</h3>
@@ -49,4 +51,6 @@ export default function ConfirmModal({
       </div>
     </div>
   );
+
+  return createPortal(modal, document.body);
 }
