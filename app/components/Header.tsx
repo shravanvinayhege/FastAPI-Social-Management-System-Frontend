@@ -4,13 +4,26 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Avatar from "./Avatar";
 import ThemeToggle from "./ThemeToggle";
-import { getToken } from "../../lib/api";
+import { getToken, getCurrentUserId, getUser } from "../../lib/api";
 
 export default function Header() {
   const [isAuthed, setIsAuthed] = useState(false);
+  const [user, setUser] = useState<{ id: number; email: string } | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setIsAuthed(Boolean(getToken()));
+    const token = getToken();
+    setIsAuthed(Boolean(token));
+    if (!token) return;
+
+    const id = getCurrentUserId();
+    if (!id) return;
+
+    setLoading(true);
+    getUser(id)
+      .then((u) => setUser(u))
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -34,7 +47,14 @@ export default function Header() {
             <button className="vf-btn-secondary px-3 py-1 text-sm">Sign in</button>
           </Link>
           <div className="hidden md:block">
-            {isAuthed ? <Avatar size={36} email={undefined} /> : null}
+            {isAuthed && user ? (
+              <Link href={`/u/${user.id}`} className="flex items-center gap-2">
+                <Avatar size={36} email={user.email} id={user.id} />
+                <span className="text-sm text-slate-200 truncate max-w-[10rem]">{user.email}</span>
+              </Link>
+            ) : isAuthed && loading ? (
+              <div className="h-9 w-9 rounded-full bg-slate-700 animate-pulse" />
+            ) : null}
           </div>
         </div>
       </div>

@@ -51,26 +51,28 @@
 
   --background-base: #f0f4fc;
   --background-mid:  #e8eef8;
-  --halo-cyan:    rgba(37, 99, 235, 0.10);
-  --halo-emerald: rgba(16, 185, 129, 0.09);
-  --halo-blue:    rgba(14, 165, 233, 0.11);
+  /* slightly stronger halos for better depth on light backgrounds */
+  --halo-cyan:    rgba(37, 99, 235, 0.14);
+  --halo-emerald: rgba(16, 185, 129, 0.12);
+  --halo-blue:    rgba(14, 165, 233, 0.14);
 
   --background-accent-1: var(--halo-cyan);
   --background-accent-2: var(--halo-emerald);
   --background-accent-3: var(--halo-blue);
 
-  --foreground:       #0f172a;
-  --foreground-muted: #64748b;
+  --foreground:       #0b1723;
+  --foreground-muted: #475569;
 
-  --panel:          rgba(255, 255, 255, 0.72);
-  --panel-border:   rgba(148, 163, 184, 0.22);
-  --panel-highlight: rgba(255, 255, 255, 0.90);
+  /* make panels more solid on light mode for readability */
+  --panel:          rgba(255, 255, 255, 0.92);
+  --panel-border:   rgba(15, 23, 42, 0.06);
+  --panel-highlight: rgba(255, 255, 255, 0.98);
 
   --card-text: #0f172a;
 
-  --glow-cyan:    rgba(37, 99, 235, 0.14);
-  --glow-emerald: rgba(16, 185, 129, 0.12);
-  --glow-blue:    rgba(14, 165, 233, 0.14);
+  --glow-cyan:    rgba(37, 99, 235, 0.18);
+  --glow-emerald: rgba(16, 185, 129, 0.15);
+  --glow-blue:    rgba(14, 165, 233, 0.18);
 }
 
 /* ─── Global Reset ───────────────────────────────────────────── */
