@@ -98,22 +98,15 @@ export default function PostCard({
   return (
     <article className="group rounded-[1.25rem] border border-white/6 bg-white/2 p-4 transition hover:shadow-lg">
       <div className="flex flex-col sm:flex-row gap-4">
-        <VoteRail
-          votes={currentVotes}
-          onUpvote={() => void handleVote(1)}
-          onRemove={() => void handleVote(0)}
-          isVoting={isVoting}
-        />
-
-        <div className="flex-1">
+        <div className="flex-1 order-2 sm:order-1">
           <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3">
-              <Avatar email={postedBy} size={40} />
-              <div>
-                <h3 className="text-sm font-semibold text-white">{postedBy}</h3>
-                <div className="text-xs text-slate-300">{postedAt}</div>
+              <div className="flex items-center gap-3">
+                <Avatar email={postedBy} size={40} />
+                <div>
+                  <h3 className="text-xs font-medium text-slate-300">{postedBy}</h3>
+                  <div className="text-xs text-slate-400">{postedAt}</div>
+                </div>
               </div>
-            </div>
 
             <div>
               {isOwner ? (
@@ -177,6 +170,15 @@ export default function PostCard({
           )}
 
           {error ? <p className="mt-3 text-xs text-rose-300">{error}</p> : null}
+        </div>
+
+        <div className="order-1 sm:order-2">
+          <VoteRail
+            votes={currentVotes}
+            onUpvote={() => void handleVote(1)}
+            onRemove={() => void handleVote(0)}
+            isVoting={isVoting}
+          />
         </div>
       </div>
     </article>

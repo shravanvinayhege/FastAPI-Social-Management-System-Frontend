@@ -160,66 +160,67 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen px-4 py-6 text-slate-100 sm:py-8 lg:py-10">
-      <div className="mx-auto w-full max-w-6xl space-y-6 sm:space-y-8">
-        <header id="overview-section" className="vf-card rounded-[1.75rem] p-5 sm:p-6 lg:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="text-xs uppercase tracking-[0.45em] text-cyan-300">VoteFlow</p>
-              <h1 className="mt-3 font-[var(--font-space-grotesk)] text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
-                Community Posts
-              </h1>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300 sm:text-base">
-                A polished social feed with posting, voting, and personal content management.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2 lg:justify-end">
-              <ThemeToggle />
-              <Link
-                href="/register"
-                className="vf-btn-primary px-4 py-2 text-sm hover:brightness-105"
-              >
-                New Account
-              </Link>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="vf-btn-secondary px-4 py-2 text-sm hover:bg-white/10"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
+      <div className="mx-auto w-full max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <aside className="lg:col-span-3 space-y-4">
+            <nav className="vf-card p-4 sticky top-20">
+              <h2 className="vf-subtitle">Sections</h2>
+              <ul className="mt-3 space-y-2">
+                <li>
+                  <button
+                    onClick={() => handleModeChange("new")}
+                    className="w-full text-left rounded-md px-3 py-2 hover:bg-white/5 focus-visible"
+                  >
+                    Feed
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => router.push("/u/" + (currentUserId ?? ""))}
+                    className="w-full text-left rounded-md px-3 py-2 hover:bg-white/5 focus-visible"
+                  >
+                    My Posts
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => handleModeChange("top")}
+                    className="w-full text-left rounded-md px-3 py-2 hover:bg-white/5 focus-visible"
+                  >
+                    Voting
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </aside>
 
-          <div className="mt-6 flex flex-wrap gap-2">
-            <span className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-200">
-              Smooth interactions
-            </span>
-            <span className="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
-              Responsive layout
-            </span>
-            <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-slate-200">
-              Light and dark themes
-            </span>
-          </div>
+          <section className="lg:col-span-9 space-y-6">
+            <header id="overview-section" className="vf-card rounded-[1.5rem] p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="vf-subtitle">VoteFlow</p>
+                  <h1 className="mt-2 font-[var(--font-space-grotesk)] text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                    Community Posts
+                  </h1>
+                  <p className="mt-2 max-w-xl text-sm leading-6 text-slate-300">
+                    A polished social feed with posting, voting, and personal content management.
+                  </p>
+                </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Feed</p>
-              <p className="mt-1 font-medium text-white">All posts in one place</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">My Posts</p>
-              <p className="mt-1 font-medium text-white">Your own content section</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Voting</p>
-              <p className="mt-1 font-medium text-white">Upvote and save momentum</p>
-            </div>
-          </div>
-        </header>
+                <div className="flex gap-2">
+                  <ThemeToggle />
+                  <Link href="/register" className="vf-btn-primary px-4 py-2 text-sm">
+                    New Account
+                  </Link>
+                  <button type="button" onClick={handleLogout} className="vf-btn-secondary px-4 py-2 text-sm">
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </header>
 
         <section className="space-y-4">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <div className="flex-1">
               <SearchBar onSearch={handleSearch} />
             </div>
@@ -259,6 +260,9 @@ export default function HomePage() {
             ))}
           </div>
         ) : null}
+
+          </section>
+        </div>
       </div>
 
       {showScrollTop ? (
