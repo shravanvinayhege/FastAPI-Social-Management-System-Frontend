@@ -2,6 +2,7 @@
 
 import React from "react";
 import { getToken } from "../../lib/api";
+import DefaultAvatarSvg from "./DefaultAvatarSvg";
 
 type AvatarProps = {
   email?: string;
@@ -38,7 +39,17 @@ export default function Avatar({ email, id, size = 40 }: AvatarProps) {
   }
 
   const label = initials(source ?? String(id ?? "?"));
-  const hue = (email ? [...email].reduce((s, c) => s + c.charCodeAt(0), 0) : (id ?? 1) * 37) % 360;
+  // If there's no source and no id, render the default SVG avatar
+  if (!source && (id === undefined || id === null)) {
+    return (
+      <div style={{ width: size, height: size }} aria-hidden>
+        <DefaultAvatarSvg size={size} />
+      </div>
+    );
+  }
+
+  const hue = (source ? [...String(source)].reduce((s, c) => s + c.charCodeAt(0), 0) : (id ?? 1) * 37) % 360;
+
   const bg = `hsl(${hue} 60% 30%)`;
 
   return (
