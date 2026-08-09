@@ -18,9 +18,6 @@ export default function Header() {
           <Link href="/" className="text-sm text-slate-200 hover:text-white">
             Feed
           </Link>
-          <Link href="/people" className="text-sm text-slate-200 hover:text-white">
-            People
-          </Link>
         </nav>
 
         <div className="flex items-center gap-3">
