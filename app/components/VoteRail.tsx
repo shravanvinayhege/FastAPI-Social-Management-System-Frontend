@@ -20,7 +20,9 @@ export default function VoteRail({ votes, onUpvote, onRemove, isVoting = false }
         title="Upvote"
         className="rounded-xl border border-white/10 bg-white/3 px-2 py-2 text-sm font-semibold text-emerald-300 hover:bg-emerald-500/10 disabled:opacity-60 focus-visible"
       >
-        ▲
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M12 5l7 7H5l7-7z" fill="currentColor" />
+        </svg>
       </button>
       <div className="text-sm font-semibold text-white tabular-nums">{votes}</div>
       <button
@@ -31,7 +33,9 @@ export default function VoteRail({ votes, onUpvote, onRemove, isVoting = false }
         title="Remove vote"
         className="rounded-xl border border-white/10 bg-white/3 px-2 py-2 text-sm font-semibold text-rose-300 hover:bg-rose-500/10 disabled:opacity-60 focus-visible"
       >
-        ▽
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M12 19l-7-7h14l-7 7z" fill="currentColor" />
+        </svg>
       </button>
     </div>
   );
