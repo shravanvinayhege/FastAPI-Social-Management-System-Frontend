@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PostCard from "./components/PostCard";
 import ThemeToggle from "./components/ThemeToggle";
+import Composer from "./components/Composer";
+import FeedTabs from "./components/FeedTabs";
+import SearchBar from "./components/SearchBar";
 import {
   createPost,
   deletePost,
@@ -50,13 +53,11 @@ export default function HomePage() {
       return;
     }
     setCurrentUserId(getCurrentUserId());
-
-    const loadPosts = async () => {
+    const loadPosts = async (opts = {}) => {
       setIsLoading(true);
       setError("");
-
       try {
-        const response = await getPosts();
+        const response = await getPosts(opts as any);
         setPosts(response);
       } catch (loadError) {
         const message =
@@ -67,7 +68,7 @@ export default function HomePage() {
       }
     };
 
-    void loadPosts();
+    void loadPosts({ limit: 20, skip: 0 });
   }, [router]);
 
   useEffect(() => {
@@ -87,7 +88,6 @@ export default function HomePage() {
     event.preventDefault();
     setIsSubmitting(true);
     setError("");
-
     try {
       const created = await createPost(title, content, true);
       setPosts((prev) => [{ Post: created, votes: 0 }, ...prev]);
@@ -117,6 +117,40 @@ export default function HomePage() {
   const handleLogout = () => {
     logout();
     router.push("/login");
+  };
+
+  const handleSearch = async (q: string) => {
+    setIsLoading(true);
+    try {
+      const results = await getPosts({ search: q, limit: 50 });
+      setPosts(results);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Search failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const [mode, setMode] = useState<"new" | "top">("new");
+
+  const handleModeChange = (m: "new" | "top") => {
+    setMode(m);
+    if (m === "new") {
+      void (async () => {
+        setIsLoading(true);
+        try {
+          const results = await getPosts({ limit: 20, skip: 0 });
+          setPosts(results);
+        } catch (err) {
+          setError(err instanceof Error ? err.message : "Unable to load posts");
+        } finally {
+          setIsLoading(false);
+        }
+      })();
+    } else {
+      // Top: sort client-side by votes
+      setPosts((prev) => [...prev].sort((a, b) => b.votes - a.votes));
+    }
   };
 
   const handleScrollToTop = () => {
@@ -183,33 +217,19 @@ export default function HomePage() {
           </div>
         </header>
 
-        <section id="create-post-section" className="vf-card rounded-[1.75rem] p-5 sm:p-6 lg:p-8">
-          <h2 className="font-[var(--font-space-grotesk)] text-xl font-semibold text-white">Create Post</h2>
-          <form onSubmit={handleCreatePost} className="mt-4 space-y-4">
-            <input
-              type="text"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              placeholder="Post title"
-              required
-              className="w-full rounded-xl border border-white/15 bg-slate-900/70 px-4 py-3 text-white placeholder:text-slate-400 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
-            />
-            <textarea
-              value={content}
-              onChange={(event) => setContent(event.target.value)}
-              placeholder="Share your thoughts..."
-              rows={4}
-              required
-              className="w-full rounded-xl border border-white/15 bg-slate-900/70 px-4 py-3 text-white placeholder:text-slate-400 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
-            />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="vf-btn-primary px-5 py-2.5 text-sm transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {isSubmitting ? "Posting..." : "Create Post"}
-            </button>
-          </form>
+        <section className="space-y-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <SearchBar onSearch={handleSearch} />
+            </div>
+            <div className="flex items-center gap-4">
+              <FeedTabs mode={mode} onChange={handleModeChange} />
+            </div>
+          </div>
+
+          <Composer
+            onCreate={(created) => setPosts((prev) => [{ Post: created, votes: 0 }, ...prev])}
+          />
         </section>
 
         {isLoading ? (
@@ -225,87 +245,25 @@ export default function HomePage() {
         ) : null}
 
         {!isLoading && !error && posts.length === 0 ? (
-          <div className="vf-card rounded-[2rem] p-6 text-sm text-slate-300">
-            No posts available yet.
-          </div>
+          <div className="vf-card rounded-[2rem] p-6 text-sm text-slate-300">No posts available yet.</div>
         ) : null}
 
         {!isLoading && !error && posts.length > 0 ? (
-          <div className="space-y-6 sm:space-y-8">
-            <section id="my-posts-section" className="vf-card rounded-[1.75rem] p-5 sm:p-6 lg:p-8">
-              <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 className="font-[var(--font-space-grotesk)] text-2xl font-semibold text-white">
-                    My Posts
-                  </h2>
-                  <p className="mt-1 text-sm text-slate-300">
-                    Posts created by your account are shown here.
-                  </p>
-                </div>
-                <span className="rounded-full border border-cyan-400/20 bg-cyan-500/15 px-3 py-1 text-xs font-medium text-cyan-200">
-                  {posts.filter((post) => post.Post.owner_id === currentUserId).length} items
-                </span>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-1 xl:grid-cols-2">
-                {posts
-                  .filter((post) => post.Post.owner_id === currentUserId)
-                  .map((post) => (
-                    <PostCard
-                      key={post.Post.id}
-                      postId={post.Post.id}
-                      title={post.Post.title}
-                      content={post.Post.content}
-                      votes={post.votes}
-                      postedBy={post.Post.owner?.email ?? "Unknown user"}
-                      postedAt={formatPostedTime(post.Post.created_at)}
-                      isOwner={currentUserId === post.Post.owner_id}
-                      onDelete={handleDeletePost}
-                      onUpdate={handleUpdatePost}
-                    />
-                  ))}
-              </div>
-
-              {posts.filter((post) => post.Post.owner_id === currentUserId).length === 0 ? (
-                <p className="mt-5 rounded-2xl border border-dashed border-white/15 bg-white/5 px-4 py-4 text-sm text-slate-300">
-                  You have not created any posts yet. Use the create form above to publish your
-                  first one.
-                </p>
-              ) : null}
-            </section>
-
-            <section id="all-posts-section" className="vf-card rounded-[1.75rem] p-5 sm:p-6 lg:p-8">
-              <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 className="font-[var(--font-space-grotesk)] text-2xl font-semibold text-white">
-                    All Posts
-                  </h2>
-                  <p className="mt-1 text-sm text-slate-300">
-                    Explore the full feed and interact with the community.
-                  </p>
-                </div>
-                <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-slate-200">
-                  {posts.length} total
-                </span>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-1 xl:grid-cols-2">
-                {posts.map((post) => (
-                  <PostCard
-                    key={post.Post.id}
-                    postId={post.Post.id}
-                    title={post.Post.title}
-                    content={post.Post.content}
-                    votes={post.votes}
-                    postedBy={post.Post.owner?.email ?? "Unknown user"}
-                    postedAt={formatPostedTime(post.Post.created_at)}
-                    isOwner={currentUserId === post.Post.owner_id}
-                    onDelete={handleDeletePost}
-                    onUpdate={handleUpdatePost}
-                  />
-                ))}
-              </div>
-            </section>
+          <div className="space-y-4">
+            {posts.map((post) => (
+              <PostCard
+                key={post.Post.id}
+                postId={post.Post.id}
+                title={post.Post.title}
+                content={post.Post.content}
+                votes={post.votes}
+                postedBy={post.Post.owner?.email ?? "Unknown user"}
+                postedAt={formatPostedTime(post.Post.created_at)}
+                isOwner={currentUserId === post.Post.owner_id}
+                onDelete={handleDeletePost}
+                onUpdate={handleUpdatePost}
+              />
+            ))}
           </div>
         ) : null}
       </div>

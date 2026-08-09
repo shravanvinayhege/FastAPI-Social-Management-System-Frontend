@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { vote } from "../../lib/api";
+import VoteRail from "./VoteRail";
+import Avatar from "./Avatar";
 
 type PostCardProps = {
   title: string;
@@ -94,107 +96,82 @@ export default function PostCard({
   };
 
   return (
-    <article className="vf-card group rounded-[2rem] p-6 transition duration-300 hover:border-cyan-400/30 hover:shadow-cyan-900/30">
-      {isEditing ? (
-        <div className="space-y-3">
-          <input
-            value={editTitle}
-            onChange={(event) => setEditTitle(event.target.value)}
-            className="w-full rounded-lg border border-white/15 bg-slate-800/80 px-3 py-2 text-white outline-none focus:border-cyan-400"
-          />
-          <textarea
-            value={editContent}
-            onChange={(event) => setEditContent(event.target.value)}
-            rows={4}
-            className="w-full rounded-lg border border-white/15 bg-slate-800/80 px-3 py-2 text-white outline-none focus:border-cyan-400"
-          />
-        </div>
-      ) : (
-        <>
-          <h2 className="font-[var(--font-space-grotesk)] text-xl font-semibold text-white group-hover:text-cyan-100">
-            {title}
-          </h2>
-          <p className="mt-3 text-sm leading-6 text-slate-300">{content}</p>
-        </>
-      )}
+    <article className="group rounded-[1.25rem] border border-white/6 bg-white/2 p-4 transition hover:shadow-lg">
+      <div className="flex gap-4">
+        <VoteRail
+          votes={currentVotes}
+          onUpvote={() => void handleVote(1)}
+          onRemove={() => void handleVote(0)}
+          isVoting={isVoting}
+        />
 
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-        <span className="rounded-full border border-cyan-400/20 bg-cyan-500/15 px-3 py-1 text-sm font-medium text-cyan-200">
-          Votes: {currentVotes}
-        </span>
+        <div className="flex-1">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <Avatar email={postedBy} size={40} />
+              <div>
+                <h3 className="text-sm font-semibold text-white">{postedBy}</h3>
+                <div className="text-xs text-slate-300">{postedAt}</div>
+              </div>
+            </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => void handleVote(1)}
-            disabled={isVoting}
-            className="vf-btn-success px-3 py-2 text-sm transition hover:bg-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Upvote
-          </button>
-          <button
-            type="button"
-            onClick={() => void handleVote(0)}
-            disabled={isVoting}
-            className="vf-btn-danger px-3 py-2 text-sm transition hover:bg-rose-500/20 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Remove Vote
-          </button>
-        </div>
-      </div>
+            <div>
+              {isOwner ? (
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing((s) => !s)}
+                    className="vf-btn-secondary px-2 py-1 text-xs"
+                  >
+                    {isEditing ? "Cancel" : "Edit"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void handleDelete()}
+                    disabled={isDeleting}
+                    className="vf-btn-danger px-2 py-1 text-xs"
+                  >
+                    {isDeleting ? "Deleting..." : "Delete"}
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          </div>
 
-      <div className="mt-3 flex flex-wrap gap-2 text-xs">
-        <span className="vf-meta-chip px-3 py-1">By: {postedBy}</span>
-        <span className="vf-meta-chip px-3 py-1">Posted: {postedAt}</span>
-      </div>
-
-      {isOwner ? (
-        <div className="mt-4 flex gap-2">
           {isEditing ? (
-            <>
-              <button
-                type="button"
-                onClick={() => void handleSave()}
-                disabled={isSaving}
-                className="vf-btn-primary px-3 py-2 text-xs hover:bg-cyan-300 disabled:opacity-60"
-              >
-                {isSaving ? "Saving..." : "Save"}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsEditing(false);
-                  setEditTitle(title);
-                  setEditContent(content);
-                }}
-                className="vf-btn-secondary px-3 py-2 text-xs hover:bg-white/10"
-              >
-                Cancel
-              </button>
-            </>
+            <div className="mt-3 space-y-2">
+              <input
+                value={editTitle}
+                onChange={(event) => setEditTitle(event.target.value)}
+                className="w-full rounded-md border border-white/10 bg-slate-900/60 px-3 py-2 text-white outline-none"
+              />
+              <textarea
+                value={editContent}
+                onChange={(event) => setEditContent(event.target.value)}
+                rows={3}
+                className="w-full rounded-md border border-white/10 bg-slate-900/60 px-3 py-2 text-white outline-none"
+              />
+              <div className="mt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => void handleSave()}
+                  disabled={isSaving}
+                  className="vf-btn-primary px-3 py-1 text-sm"
+                >
+                  {isSaving ? "Saving..." : "Save"}
+                </button>
+              </div>
+            </div>
           ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => setIsEditing(true)}
-                className="vf-btn-secondary px-3 py-2 text-xs hover:bg-cyan-500/20"
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                onClick={() => void handleDelete()}
-                disabled={isDeleting}
-                className="vf-btn-danger px-3 py-2 text-xs hover:bg-rose-500/20 disabled:opacity-60"
-              >
-                {isDeleting ? "Deleting..." : "Delete"}
-              </button>
-            </>
+            <div className="mt-3">
+              <h2 className="text-lg font-semibold text-white">{title}</h2>
+              <p className="mt-2 text-sm text-slate-300">{content}</p>
+            </div>
           )}
-        </div>
-      ) : null}
 
-      {error ? <p className="mt-3 text-xs text-rose-300">{error}</p> : null}
+          {error ? <p className="mt-3 text-xs text-rose-300">{error}</p> : null}
+        </div>
+      </div>
     </article>
   );
 }

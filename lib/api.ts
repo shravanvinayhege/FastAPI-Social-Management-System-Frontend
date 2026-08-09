@@ -174,8 +174,17 @@ export async function registerUser(email: string, password: string): Promise<Use
   });
 }
 
-export async function getPosts(): Promise<PostWithVotes[]> {
-  return request<PostWithVotes[]>("/posts/", { method: "GET" }, { auth: true, json: true });
+export type GetPostsOptions = { limit?: number; skip?: number; search?: string };
+
+export async function getPosts(options: GetPostsOptions = {}): Promise<PostWithVotes[]> {
+  const params = new URLSearchParams();
+  if (options.limit !== undefined) params.set("limit", String(options.limit));
+  if (options.skip !== undefined) params.set("skip", String(options.skip));
+  if (options.search) params.set("search", options.search);
+
+  const query = params.toString();
+  const path = query ? `/posts/?${query}` : "/posts/";
+  return request<PostWithVotes[]>(path, { method: "GET" }, { auth: true, json: true });
 }
 
 export async function createPost(
@@ -222,4 +231,13 @@ export async function vote(postId: number, dir: 0 | 1): Promise<{ message: strin
     },
     { auth: true, json: true }
   );
+}
+
+// Users
+export async function listUsers(): Promise<UserOut[]> {
+  return request<UserOut[]>("/users/", { method: "GET" }, { auth: true, json: true });
+}
+
+export async function getUser(id: number): Promise<UserOut> {
+  return request<UserOut>(`/users/${id}`, { method: "GET" }, { auth: true, json: true });
 }
