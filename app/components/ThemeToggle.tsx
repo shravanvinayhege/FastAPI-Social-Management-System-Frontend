@@ -13,6 +13,7 @@ function applyTheme(theme: Theme) {
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("dark");
+  const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme | null;
@@ -25,9 +26,32 @@ export default function ThemeToggle() {
   }, []);
 
   const toggleTheme = () => {
+    if (busy) return;
+    setBusy(true);
+
     const nextTheme: Theme = theme === "dark" ? "light" : "dark";
+
+    // optional confirmation flow (user setting)
+    try {
+      const confirmPref = localStorage.getItem("vf.confirmTheme");
+      if (confirmPref === "1") {
+        // eslint-disable-next-line no-alert
+        const ok = window.confirm(
+          `Switch to ${nextTheme} theme?`
+        );
+        if (!ok) {
+          setBusy(false);
+          return;
+        }
+      }
+    } catch {
+      // ignore
+    }
+
     setTheme(nextTheme);
     applyTheme(nextTheme);
+    // prevent accidental double-switches
+    setTimeout(() => setBusy(false), 300);
   };
 
   return (

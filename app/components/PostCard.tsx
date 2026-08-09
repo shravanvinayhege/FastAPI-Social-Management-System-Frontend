@@ -96,7 +96,7 @@ export default function PostCard({
   };
 
   return (
-    <article className="group rounded-[1.25rem] border border-white/6 bg-white/2 p-4 transition hover:shadow-lg">
+    <article className="vf-post group rounded-[1.25rem] border border-white/6 bg-white/2 p-4 transition hover:shadow-lg">
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 order-2 sm:order-1">
           <div className="flex items-start justify-between">

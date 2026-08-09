@@ -701,3 +701,25 @@ button, input, textarea, a {
 :root:not([data-theme="light"]) .vf-subtitle {
   color: rgba(226,232,240,0.64);
 }
+
+/* Improve light-mode appearance for post / comment areas */
+:root[data-theme="light"] .vf-post {
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,252,0.94));
+  border-color: rgba(15,23,42,0.06);
+  color: #0b1723;
+}
+
+:root[data-theme="light"] .vf-post h2,
+:root[data-theme="light"] .vf-post h3,
+:root[data-theme="light"] .vf-post p {
+  color: #0b1723;
+}
+
+:root[data-theme="light"] .vf-post .text-slate-300 {
+  color: #475569 !important;
+}
+
+:root[data-theme="light"] .vf-post .vf-btn-secondary,
+:root[data-theme="light"] .vf-post .vf-btn-danger {
+  background: rgba(255,255,255,0.98);
+}
