@@ -184,18 +184,7 @@ export default function HomePage() {
                     <span>Feed</span>
                   </button>
                 </li>
-                <li>
-                  <button
-                    onClick={() => router.push("/u/" + (currentUserId ?? ""))}
-                    className="w-full text-left rounded-md px-3 py-2 hover:bg-white/5 focus-visible flex items-center gap-3"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="flex-none">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span>My Posts</span>
-                  </button>
-                </li>
+                {/* 'My Posts' removed per request */}
                 <li>
                   <button
                     onClick={() => handleModeChange("top")}

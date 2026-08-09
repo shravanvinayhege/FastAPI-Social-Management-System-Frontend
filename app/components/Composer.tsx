@@ -40,7 +40,9 @@ export default function Composer({ onCreate }: ComposerProps) {
     <form onSubmit={submit} className="vf-card rounded-[1.25rem] p-4" aria-label="Create post">
       <div className="flex gap-4">
         <div className="flex-shrink-0">
-          {user ? <div className="pt-1"><Avatar size={40} email={user.email} id={user.id} /></div> : <div className="h-10 w-10 rounded-full bg-slate-700" />}
+          <div className="pt-1">
+            {user ? <Avatar size={40} email={user.email} id={user.id} /> : <Avatar size={40} />}
+          </div>
         </div>
         <div className="flex-1">
           <input

@@ -2,9 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getCurrentUserId } from "../../lib/api";
 
 export default function BottomNav() {
   const path = usePathname();
+  const [myHref, setMyHref] = useState<string>("/login");
+
+  useEffect(() => {
+    const id = getCurrentUserId();
+    setMyHref(id ? `/u/${id}` : "/login");
+  }, []);
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 block md:hidden border-t border-white/6 bg-slate-900/70 backdrop-blur-sm">
@@ -15,7 +23,7 @@ export default function BottomNav() {
           </svg>
           <span>Feed</span>
         </Link>
-        <Link href="/u/" className={`flex flex-col items-center text-xs text-slate-300`}>
+        <Link href={myHref} className={`flex flex-col items-center text-xs text-slate-300`}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="mb-0.5">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
