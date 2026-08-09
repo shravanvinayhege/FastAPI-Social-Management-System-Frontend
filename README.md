@@ -48,9 +48,11 @@ Browser
   │     └── Next.js App (TypeScript + CSS)
   │           └── fetch() / API calls over HTTPS
   │
-  └── Render  ──────────────────────────────────────────────
-        ├── FastAPI (Python)
-        └── PostgreSQL
+  |── Render  ──────────────────────────────────────────────
+  |      ├── FastAPI (Python)
+  |___Neon ___________________________________________________
+     |---- Postgrsql
+
 ```
 
 ---
