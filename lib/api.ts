@@ -1,4 +1,5 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+export const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ?? "https://fastapi-management-system.onrender.com";
 
 const TOKEN_KEY = "token";
 const LEGACY_TOKEN_KEY = "access_token";
