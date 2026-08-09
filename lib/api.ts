@@ -233,11 +233,6 @@ export async function vote(postId: number, dir: 0 | 1): Promise<{ message: strin
   );
 }
 
-// Users
-export async function listUsers(): Promise<UserOut[]> {
-  return request<UserOut[]>("/users/", { method: "GET" }, { auth: true, json: true });
-}
-
 export async function getUser(id: number): Promise<UserOut> {
   return request<UserOut>(`/users/${id}`, { method: "GET" }, { auth: true, json: true });
 }
