@@ -118,21 +118,25 @@ export default function PostCard({
             <div>
               {isOwner ? (
                 <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsEditing((s) => !s)}
-                    className="vf-btn-secondary px-2 py-1 text-xs"
-                  >
-                    {isEditing ? "Cancel" : "Edit"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void handleDelete()}
-                    disabled={isDeleting}
-                    className="vf-btn-danger px-2 py-1 text-xs"
-                  >
-                    {isDeleting ? "Deleting..." : "Delete"}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing((s) => !s)}
+                      aria-pressed={isEditing}
+                      className="vf-btn-secondary px-2 py-1 text-xs focus-visible"
+                      title={isEditing ? "Cancel edit" : "Edit post"}
+                    >
+                      {isEditing ? "Cancel" : "Edit"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => void handleDelete()}
+                      disabled={isDeleting}
+                      aria-label="Delete post"
+                      className="vf-btn-danger px-2 py-1 text-xs focus-visible"
+                      title="Delete post"
+                    >
+                      {isDeleting ? "Deleting..." : "Delete"}
+                    </button>
                 </div>
               ) : null}
             </div>
@@ -143,20 +147,23 @@ export default function PostCard({
               <input
                 value={editTitle}
                 onChange={(event) => setEditTitle(event.target.value)}
-                className="w-full rounded-md border border-white/10 bg-slate-900/60 px-3 py-2 text-white outline-none"
+                aria-label="Edit title"
+                className="w-full rounded-md border border-white/10 bg-slate-900/60 px-3 py-2 text-white outline-none focus-visible"
               />
               <textarea
                 value={editContent}
                 onChange={(event) => setEditContent(event.target.value)}
                 rows={3}
-                className="w-full rounded-md border border-white/10 bg-slate-900/60 px-3 py-2 text-white outline-none"
+                aria-label="Edit content"
+                className="w-full rounded-md border border-white/10 bg-slate-900/60 px-3 py-2 text-white outline-none focus-visible"
               />
               <div className="mt-2 flex gap-2">
                 <button
                   type="button"
                   onClick={() => void handleSave()}
                   disabled={isSaving}
-                  className="vf-btn-primary px-3 py-1 text-sm"
+                  aria-label="Save changes"
+                  className="vf-btn-primary px-3 py-1 text-sm focus-visible"
                 >
                   {isSaving ? "Saving..." : "Save"}
                 </button>

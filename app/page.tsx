@@ -8,6 +8,7 @@ import ThemeToggle from "./components/ThemeToggle";
 import Composer from "./components/Composer";
 import FeedTabs from "./components/FeedTabs";
 import SearchBar from "./components/SearchBar";
+import { Loading, Empty, ErrorBanner } from "./components/Feedback";
 import {
   createPost,
   deletePost,
@@ -232,20 +233,12 @@ export default function HomePage() {
           />
         </section>
 
-        {isLoading ? (
-          <div className="vf-card rounded-[2rem] p-6 text-sm text-slate-200">
-            Loading posts...
-          </div>
-        ) : null}
+        {isLoading ? <Loading label="Loading posts..." /> : null}
 
-        {!isLoading && error ? (
-          <div className="rounded-[2rem] border border-red-400/40 bg-red-500/10 p-6 text-sm text-red-200 backdrop-blur-xl">
-            {error}
-          </div>
-        ) : null}
+        {!isLoading && error ? <ErrorBanner message={error} /> : null}
 
         {!isLoading && !error && posts.length === 0 ? (
-          <div className="vf-card rounded-[2rem] p-6 text-sm text-slate-300">No posts available yet.</div>
+          <Empty title="No posts yet" message="Be the first to create a post." />
         ) : null}
 
         {!isLoading && !error && posts.length > 0 ? (
