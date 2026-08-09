@@ -35,6 +35,8 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggleTheme}
       aria-pressed={theme === "light"}
+      aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+      title={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
       className="vf-theme-toggle inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium"
     >
       <span className="vf-theme-toggle-icon flex h-7 w-7 items-center justify-center rounded-full text-base leading-none">
