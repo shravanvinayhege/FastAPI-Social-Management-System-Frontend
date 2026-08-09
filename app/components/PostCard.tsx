@@ -97,14 +97,24 @@ export default function PostCard({
 
   return (
     <article className="vf-post group rounded-[1.25rem] border border-white/6 bg-white/2 p-4 transition hover:shadow-lg">
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1 order-2 sm:order-1">
+      <div className="flex gap-4">
+        <div className="hidden sm:flex sm:flex-col sm:items-center">
+          <VoteRail
+            votes={currentVotes}
+            onUpvote={() => void handleVote(1)}
+            onRemove={() => void handleVote(0)}
+            isVoting={isVoting}
+          />
+        </div>
+        <div className="flex-1">
           <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <Avatar email={postedBy} size={40} />
                 <div>
-                  <h3 className="text-xs font-medium text-slate-300">{postedBy}</h3>
-                  <div className="text-xs text-slate-400">{postedAt}</div>
+                  <h3 className="text-sm font-semibold text-white">
+                    {postedBy.split("@")[0].replace(/[._-]/g, " ").replace(/(^|\s)\S/g, (t) => t.toUpperCase())}
+                  </h3>
+                  <div className="text-xs text-slate-400">@{postedBy.split("@")[0]} • {postedAt}</div>
                 </div>
               </div>
 
@@ -163,23 +173,28 @@ export default function PostCard({
               </div>
             </div>
           ) : (
-            <div className="mt-3">
-              <h2 className="text-lg font-semibold text-white">{title}</h2>
-              <p className="mt-2 text-sm text-slate-300">{content}</p>
-            </div>
+            <>
+              <div className="mt-3">
+                <h2 className="text-lg font-semibold text-white">{title}</h2>
+                <p className="mt-2 text-sm text-slate-300">{content}</p>
+              </div>
+
+              {/* mobile vote rail (bottom left) */}
+              <div className="mt-3 sm:hidden">
+                <VoteRail
+                  votes={currentVotes}
+                  onUpvote={() => void handleVote(1)}
+                  onRemove={() => void handleVote(0)}
+                  isVoting={isVoting}
+                />
+              </div>
+            </>
           )}
 
           {error ? <p className="mt-3 text-xs text-rose-300">{error}</p> : null}
         </div>
 
-        <div className="order-1 sm:order-2">
-          <VoteRail
-            votes={currentVotes}
-            onUpvote={() => void handleVote(1)}
-            onRemove={() => void handleVote(0)}
-            isVoting={isVoting}
-          />
-        </div>
+        
       </div>
     </article>
   );

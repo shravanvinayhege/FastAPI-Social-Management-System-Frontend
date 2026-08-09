@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Avatar from "./Avatar";
 import ThemeToggle from "./ThemeToggle";
+import SearchBar from "./SearchBar";
+import { useRouter } from "next/navigation";
 import { getToken, getCurrentUserId, getUser } from "../../lib/api";
 
 export default function Header() {
@@ -11,6 +13,8 @@ export default function Header() {
   const [user, setUser] = useState<{ id: number; email: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const token = getToken();
@@ -30,20 +34,43 @@ export default function Header() {
   return (
     <header className="fixed left-0 right-0 top-0 z-40 border-b border-white/6 bg-transparent backdrop-blur-sm">
       <div className="vf-container flex items-center justify-between gap-4 py-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Link href="/" className="text-lg font-semibold" aria-label="Home">
             <span style={{ color: "hsl(var(--accent))" }}>Vote</span>Flow
           </Link>
         </div>
 
-        <nav className="hidden items-center gap-3 md:flex">
-          <Link href="/" className="text-sm text-slate-200 hover:text-white">
-            Feed
-          </Link>
-        </nav>
+        <div className="hidden md:flex md:flex-1 md:justify-center md:px-6">
+          <div className="w-full max-w-2xl">
+            <SearchBar onSearch={(q) => router.push(q ? `/?q=${encodeURIComponent(q)}` : `/`)} />
+          </div>
+        </div>
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
+
+          {/* user / actions */}
+          <div className="hidden md:flex md:items-center md:gap-3">
+            {isAuthed && user ? (
+              <div className="relative">
+                <Link href={`/u/${user.id}`} className="flex items-center gap-2">
+                  <Avatar size={36} email={user.email} id={user.id} />
+                  <div className="hidden lg:block">
+                    <div className="text-sm font-medium text-slate-200 truncate max-w-[12rem]">
+                      {user.email.split("@")[0].replace(/[._-]/g, " ").replace(/(^|\s)\S/g, (t) => t.toUpperCase())}
+                    </div>
+                    <div className="text-xs text-slate-400">@{user.email.split("@")[0]}</div>
+                  </div>
+                </Link>
+              </div>
+            ) : isAuthed && loading ? (
+              <div className="h-9 w-9 rounded-full bg-slate-700 animate-pulse" />
+            ) : (
+              <Link href="/login">
+                <button className="vf-btn-secondary px-3 py-1 text-sm">Sign in</button>
+              </Link>
+            )}
+          </div>
 
           {/* mobile menu toggle */}
           <button
@@ -56,21 +83,6 @@ export default function Header() {
           >
             {mobileOpen ? "✕" : "☰"}
           </button>
-
-          <Link href="/login" className="md:hidden">
-            <button className="vf-btn-secondary px-3 py-1 text-sm">Sign in</button>
-          </Link>
-
-          <div className="hidden md:block">
-            {isAuthed && user ? (
-              <Link href={`/u/${user.id}`} className="flex items-center gap-2">
-                <Avatar size={36} email={user.email} id={user.id} />
-                <span className="text-sm text-slate-200 truncate max-w-[10rem]">{user.email}</span>
-              </Link>
-            ) : isAuthed && loading ? (
-              <div className="h-9 w-9 rounded-full bg-slate-700 animate-pulse" />
-            ) : null}
-          </div>
         </div>
       </div>
 
