@@ -1,0 +1,53 @@
+:root {
+  /* Primary product accent (choose a confident cyan) */
+  --accent: 210 85% 52%; /* hsl hue saturation lightness stored as H S% L% for use with hsl() via CSS */
+  --accent-foreground: #04293a;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  /* Elevation */
+  --shadow-sm: 0 2px 8px rgba(2,6,23,0.12);
+  --shadow-md: 0 10px 30px rgba(2,6,23,0.20);
+
+  /* Type scale */
+  --type-xs: 12px;
+  --type-sm: 14px;
+  --type-base: 16px;
+  --type-lg: 20px;
+  --type-xl: 28px;
+
+  /* Focus ring */
+  --focus-ring: 3px solid hsl(var(--accent) / 0.28);
+}
+
+/* Small layout utilities */
+.vf-container {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+.app-main {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+/* Accessible focus: applied to interactive elements where needed */
+.focus-visible:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px hsl(var(--accent) / 0.12), var(--focus-ring);
+  border-radius: var(--radius-md);
+}

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter, Space_Grotesk } from "next/font/google";
+import "./design-tokens.css";
 import "./globals.css";
+import Header from "./components/Header";
 
 export const metadata: Metadata = {
   title: "VoteFlow",
@@ -25,7 +27,12 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <body className="font-[var(--font-inter)] text-slate-100 antialiased">{children}</body>
+      <body className="font-[var(--font-inter)] text-slate-100 antialiased">
+        <Header />
+        <main className="app-main vf-container" style={{ paddingTop: 84 }}>
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
