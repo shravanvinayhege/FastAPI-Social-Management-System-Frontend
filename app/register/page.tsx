@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import ThemeToggle from "../components/ThemeToggle";
-import { getToken, login, registerUser } from "../../lib/api";
+import { getToken, registerUser } from "../../lib/api";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -12,7 +11,6 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
@@ -28,94 +26,64 @@ export default function RegisterPage() {
     event.preventDefault();
     setIsLoading(true);
     setError("");
-    setMessage("");
 
     try {
       await registerUser(email, password);
-      await login(email, password);
-      setMessage("Account created and logged in successfully. Redirecting...");
-      router.push("/");
-    } catch (submitError) {
-      const errorMessage =
-        submitError instanceof Error ? submitError.message : "Unable to create account.";
-      setError(errorMessage);
+      router.push("/login");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (isCheckingAuth) {
-    return null;
-  }
+  if (isCheckingAuth) return null;
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(34,211,238,0.2),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,0.2),transparent_35%),radial-gradient(circle_at_50%_100%,rgba(14,165,233,0.2),transparent_40%)]" />
+    <main className="min-h-screen flex items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        <div className="vf-card p-8">
+          <h1 className="text-2xl font-semibold">Create your account</h1>
+          <p className="text-sm text-slate-300 mt-1">Join the community and start sharing.</p>
+          <form className="mt-6 space-y-4" onSubmit={handleSubmit} aria-label="Create account form">
+            <label className="block text-sm">
+              <div className="text-sm text-slate-300">Email</div>
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                required
+                className="mt-1 w-full rounded-md border border-white/10 bg-slate-900/60 px-3 py-2 text-white outline-none focus-visible"
+              />
+            </label>
+            <label className="block text-sm">
+              <div className="text-sm text-slate-300">Password</div>
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                required
+                className="mt-1 w-full rounded-md border border-white/10 bg-slate-900/60 px-3 py-2 text-white outline-none focus-visible"
+              />
+            </label>
 
-      <div className="absolute right-4 top-4 z-10">
-        <ThemeToggle />
+            {error ? <p className="text-rose-300 text-sm">{error}</p> : null}
+
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="vf-btn-primary px-4 py-2 text-sm disabled:opacity-60 focus-visible"
+              >
+                {isLoading ? "Creating..." : "Create account"}
+              </button>
+              <a href="/login" className="text-sm text-slate-300 hover:text-white">
+                Already have an account?
+              </a>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <section className="vf-card relative w-full max-w-md rounded-[2rem] p-8">
-        <p className="text-xs uppercase tracking-[0.45em] text-cyan-300">VoteFlow</p>
-        <h1 className="mt-3 font-[var(--font-space-grotesk)] text-3xl font-semibold tracking-tight text-white">
-          Create your account
-        </h1>
-        <p className="mt-2 text-sm text-slate-200/80">Join the community and start posting.</p>
-
-        <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-100">Email</span>
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
-              required
-              className="w-full rounded-xl border border-white/15 bg-slate-900/70 px-4 py-3 text-white placeholder:text-slate-400 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
-            />
-          </label>
-
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-100">Password</span>
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Create a strong password"
-              required
-              className="w-full rounded-xl border border-white/15 bg-slate-900/70 px-4 py-3 text-white placeholder:text-slate-400 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
-            />
-          </label>
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="vf-btn-primary w-full px-4 py-3 text-sm transition duration-200 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {isLoading ? "Creating account..." : "Register"}
-          </button>
-        </form>
-
-        {error ? (
-          <p className="mt-4 rounded-lg border border-red-400/40 bg-red-500/10 px-3 py-2 text-sm text-red-200">
-            {error}
-          </p>
-        ) : null}
-
-        {message ? (
-          <p className="mt-4 rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-200">
-            {message}
-          </p>
-        ) : null}
-
-        <p className="mt-4 text-sm text-slate-300">
-          Already have an account?{" "}
-          <Link href="/login" className="font-medium text-cyan-300 hover:text-cyan-200">
-            Sign in
-          </Link>
-        </p>
-      </section>
     </main>
   );
 }
